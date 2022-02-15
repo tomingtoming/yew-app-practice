@@ -2,6 +2,8 @@ use yew::prelude::*;
 
 enum Msg {
     AddOne,
+    MinusOne,
+    Twice,
 }
 
 struct Model {
@@ -13,9 +15,7 @@ impl Component for Model {
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
-        Self {
-            value: 0,
-        }
+        Self { value: 0 }
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
@@ -24,6 +24,14 @@ impl Component for Model {
                 self.value += 1;
                 // the value has changed so we need to
                 // re-render for it to appear on the page
+                true
+            }
+            Msg::MinusOne => {
+                self.value -= 1;
+                true
+            }
+            Msg::Twice => {
+                self.value *= 2;
                 true
             }
         }
@@ -35,6 +43,8 @@ impl Component for Model {
         html! {
             <div>
                 <button onclick={link.callback(|_| Msg::AddOne)}>{ "+1" }</button>
+                <button onclick={link.callback(|_| Msg::MinusOne)}>{ "-1" }</button>
+                <button onclick={link.callback(|_| Msg::Twice)}>{ "x2" }</button>
                 <p>{ self.value }</p>
             </div>
         }
