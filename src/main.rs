@@ -1,4 +1,26 @@
 use yew::prelude::*;
+use yew_router::prelude::*;
+use yew_router::{history::History, hooks::use_history, Routable};
+
+#[derive(Clone, Routable, PartialEq)]
+enum Route {
+    #[at("/")]
+    Root,
+    #[not_found]
+    #[at("/404")]
+    NotFound,
+}
+
+#[function_component(Root)]
+fn root() -> Html {
+    let history = use_history().unwrap();
+    let onclick = Callback::once(move |_| history.push(Route::NotFound));
+    html! {
+        <div>
+            <button {onclick}>{"Go to 404"}</button>
+        </div>
+    }
+}
 
 enum Msg {
     AddOne,
@@ -52,5 +74,23 @@ impl Component for Model {
 }
 
 fn main() {
-    yew::start_app::<Model>();
+    yew::start_app::<Main>();
+}
+
+fn switch(routes: &Route) -> Html {
+    match routes {
+        Route::Root => html! {<Root/>},
+        &Route::NotFound => html! {
+            <div>{ "not found" }</div>
+        },
+    }
+}
+
+#[function_component(Main)]
+fn app() -> Html {
+    html! {
+        <BrowserRouter>
+            <Switch<Route> render={Switch::render(switch)} />
+        </BrowserRouter>
+    }
 }
