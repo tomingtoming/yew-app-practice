@@ -16,6 +16,14 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path:
+            - ~/.cargo/bin/trunk
+            - ~/.rustup/toolchains
+          key: rust-${{ hashFiles('Cargo.lock') }}
+          restore-keys: rust-
       - run: rustup target add wasm32-unknown-unknown
       - run: cargo install trunk
       - run: trunk build --release
