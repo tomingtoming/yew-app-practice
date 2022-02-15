@@ -74,7 +74,7 @@ impl Component for Model {
 }
 
 fn main() {
-    yew::start_app::<Main>();
+    yew::start_app::<Model>();
 }
 
 fn switch(routes: &Route) -> Html {
